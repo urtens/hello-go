@@ -1,0 +1,25 @@
+appRepo = "urtens/hello-go"
+gitProvider = 'github.com'
+checkoutBranch = "master"
+
+pipelineJob("unai-test") {
+	definition {
+        cpsScm {
+            scm {
+                git {
+                    remote {
+                        github("${appRepo}", 'ssh', "${gitProvider}")
+                        credentials('gitcreds')
+                    }
+                    branch("refs/heads/${checkoutBranch}")
+                    extensions {
+                        disableRemotePoll()
+                        cleanAfterCheckout()
+                    }
+                }
+            }
+            scriptPath("Jenkinsfile")
+        }
+    }	
+}
+
